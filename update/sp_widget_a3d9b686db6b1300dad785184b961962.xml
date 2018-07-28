@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>etask-delegate-page</id>
+        <internal>false</internal>
+        <link/>
+        <name>ETASK-Delegate Page</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	
+	var delegateGR = new GlideRecord("x_etask_delegate");
+	delegateGR.get($sp.getParameter('sys_id'));
+	data.isValid = delegateGR.getValue('u_user') == null ? false : true;
+
+	if (data.isValid) {
+		data.sys_id = $sp.getParameter('sys_id');
+		data.created_by = delegateGR.getValue('sys_created_by');
+		data.starts = delegateGR.getValue('u_starts');
+		data.ends = delegateGR.getDisplayValue('u_ends');
+		data.user = delegateGR.getDisplayValue('u_user');
+		data.global = delegateGR.getDisplayValue('u_global');
+		data.task = delegateGR.getDisplayValue('u_associated_task');
+		data.url = "/csp?sys_id=" + data.task.sys_id.toString() + "&view=sp&id=etask_task_details&table=x_etask_enterprise_tasking";
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 16:44:40</sys_created_on>
+        <sys_id>a3d9b686db6b1300dad785184b961962</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>ETASK-Delegate Page</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_widget_a3d9b686db6b1300dad785184b961962</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 16:45:09</sys_updated_on>
+        <template><![CDATA[<div ng-if="data.isValid" class="panel panel-{{options.color}} b">
+
+  <div class="panel-heading">
+    <h4 class="panel-title">{{::data.short_description}}<span class="pull-right">{{::data.number}}</span></h4>
+  </div>
+
+  <div class="panel-body m-b-lg wrapper-lg">
+		<p>From {{::data.starts}} until {{::data.ends}}</p>
+    <p>
+      Global: <br />
+      Associated task: <a href="{{::data.url}}">{{::data.task}}</a>
+    </p>
+  </div>
+</div>
+
+<div ng-if="!data.isValid">
+  ${Delegate not found}
+</div>]]></template>
+    </sp_widget>
+</record_update>

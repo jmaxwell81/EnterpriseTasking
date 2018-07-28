@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_etask_enterprise_tasking</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="x_etask_enterprise_tasking">u_current_stateVALCHANGES^EQ<item endquery="false" field="u_current_state" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ETASK - Process changed state</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var errorMessage = '';
+	var override = false;
+	var currentDateTime = new GlideDateTime();
+	var userUtil = new ETASKUserUtil();
+	var delegateList = [];
+	var delegate = '';
+	var userID = gs.getUserID();
+	var taskID = current.sys_id;
+	
+	var delegates = new GlideRecord('x_etask_delegate');
+	delegates.addQuery('u_user', userID);
+	delegates.addQuery('u_global', true).addOrCondition('u_associated_task', taskID);
+	delegates.query();
+	while(delegates.next()){
+		var dateTime = '';
+		delegate = new GlideRecord('sys_user');
+		delegate.addQuery('user_name', delegates.getValue('sys_created_by'));
+		delegate.query();
+		delegate.next();
+		var activeDelegate = true;
+		if(delegates.getValue('u_starts') != ''){
+			dateTime = new GlideDateTime(delegates.getValue('u_starts'));
+			if(currentDateTime.compareTo(dateTime) >= 0){
+				activeDelegate = true;
+			} else {
+				activeDelegate = false;
+			}
+		}
+		if(delegates.getValue('u_ends') != ''){
+			dateTime = new GlideDateTime(delegates.getValue('u_ends'));
+			if(currentDateTime.compareTo(dateTime) <= 0){
+				activeDelegate = true;
+			} else {
+				activeDelegate = false;
+			}
+		}
+		if(activeDelegate == true){
+			delegateList.push(delegate.getValue('sys_id'));
+		}
+	}	
+	var delegatePerm = false;
+	delegate = '';
+	var i = '';
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Draft
+	////////////////////////////////////////////////////////////////////////////////
+	if(previous.u_current_state == 'Draft'){
+		if(current.u_current_state == 'Open'){
+			current.setAbortAction(false);			
+		} // end of: if current == open
+		else if(current.u_current_state == 'Cancelled'){
+			if(!gs.hasRole('x_etask.admin') && current.sys_created_by != gs.getUserID()){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+						   current.sys_created_by == delegate.user_name){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Not allowed to cancel task. Contact admin or task creator.';
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}							
+			}
+		} // end of: if current == cancelled
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state + '.';
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);
+		} // end of: default if current
+	} // end of: if previous == draft
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Open
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Open'){
+		if(current.u_current_state == 'Assigned'){
+			current.setAbortAction(false);
+		} // end of: if current == assigned
+		else if(current.u_current_state == 'Cancelled'){
+			if(!gs.hasRole('x_etask.admin') && current.sys_created_by != gs.getUserID()){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+						   current.sys_created_by == delegate.user_name){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Not allowed to cancel task. Contact admin or task creator.';
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}							
+			}
+		} // end of: if current == cancelled
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state;
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);
+		} // end of: default if current
+	} // end of: if previous == open
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Assigned
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Assigned'){
+		if(current.u_current_state == 'Open'){
+			if(!gs.hasRole('x_etask.admin')){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin')){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Cannot manually set state to: ';
+					errorMessage = errorMessage + current.u_current_state;
+					errorMessage = errorMessage + ' from: ';
+					errorMessage = errorMessage + previous.u_current_state;
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}
+			}
+		} // end of: if current == open
+		else if(current.u_current_state == 'In Progress'){
+			if(!gs.hasRole('x_etask.admin') && current.assigned_to != gs.getUserID()){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+						   current.assigned_to == delegate.sys_id){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Not allowed to cancel task. Contact admin or task creator.';
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}
+			}
+		} // end of: if current == in progress
+		else if(current.u_current_state == 'Cancelled'){
+			if(!gs.hasRole('x_etask.admin') && current.sys_created_by != gs.getUserID()){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+						   current.sys_created_by == delegate.user_name){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Not allowed to cancel task. Contact admin or task creator.';
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}							
+			}
+		} // end of: if current == cancelled
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state;
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);
+		} // end of: default if current
+	} // end of: if previous == assigned
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from In Progress
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'In Progress'){
+		if(current.u_current_state == 'Open'){
+			if(!gs.hasRole('x_etask.admin')){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin')){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Cannot manually set state to: ';
+					errorMessage = errorMessage + current.u_current_state;
+					errorMessage = errorMessage + ' from: ';
+					errorMessage = errorMessage + previous.u_current_state;
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}
+			}
+		} // end of: if current == open
+		else if(current.u_current_state == 'Assigned'){
+			current.setAbortAction(false);
+		} // end of: if current == assigned
+		else if(current.u_current_state == 'Submitted'){
+			current.setAbortAction(false);
+		} // end of: if current == submitted		
+		else if(current.u_current_state == 'Cancelled'){
+			if(!gs.hasRole('x_etask.admin') && current.sys_created_by != gs.getUserID()){
+				for(i = 0; (i < delegateList.length) && (delegatePerm == false); i++){
+					delegate = new GlideRecord('sys_user');
+					delegate.addQuery('sys_id', delegateList[i]);
+					delegate.query();
+					if(delegate.next()){
+						if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+						   current.sys_created_by == delegate.user_name){
+							delegatePerm = true;
+						}
+					}
+				}
+				if(delegatePerm == false){
+					errorMessage = 'Not allowed to cancel task. Contact admin or task creator.';
+					gs.addInfoMessage(errorMessage);
+					current.setAbortAction(true);
+				}							
+			}
+		} // end of: if current == cancelled
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state;
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);		
+		} // end of: default if current
+	} // end of: if previous == in progress
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Submitted
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Submitted'){
+		if(current.u_current_state == 'Assigned'){
+			current.setAbortAction(false);
+		} // end of: if current == assigned
+		else if(current.u_current_state == 'Accepted'){
+			if(current.parent == ''){
+				current.setValue('u_current_state', 'Closed');
+				ETASKCloseChildTasks(current.sys_id);
+			}
+		} // end of: if current == accepted
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state;
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);		
+		} // end of: default if current	
+	} // end of: if previous == submitted
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Accepted
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Accepted'){
+		if(current.u_current_state == 'Assigned'){
+			current.setAbortAction(false);
+		} // end of: if current == assigned
+		else if(current.u_current_state == 'Closed'){
+			current.setAbortAction(false);
+		} // end of: if current == closed
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' from: ';
+			errorMessage = errorMessage + previous.u_current_state;
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);		
+		} // end of: default if current	
+	} // end of: if previous == accepted
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Closed
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Closed'){
+		errorMessage = 'Cannot manually set state to: ';
+		errorMessage = errorMessage + current.u_current_state;
+		errorMessage = errorMessage + ' from: ';
+		errorMessage = errorMessage + previous.u_current_state;
+		gs.addInfoMessage(errorMessage);
+		current.setAbortAction(true);
+	} // end of: if previous == closed
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Cacncelled
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == 'Cancelled'){
+		errorMessage = 'Cannot manually set state to: ';
+		errorMessage = errorMessage + current.u_current_state;
+		errorMessage = errorMessage + ' from: ';
+		errorMessage = errorMessage + previous.u_current_state;
+		gs.addInfoMessage(errorMessage);
+		current.setAbortAction(true);
+	} // end of: if previous == cancelled
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from Nothing (new ETASK)
+	////////////////////////////////////////////////////////////////////////////////
+	else if(previous.u_current_state == '' || previous.u_current_state == null){
+		if(current.u_current_state == 'Draft'){
+			current.setAbortAction(false);
+		} // end of: if current == draft
+		else if(current.u_current_state == 'Open'){
+			current.setAbortAction(false);
+		} // end of: if current == open
+		else {
+			errorMessage = 'Cannot manually set state to: ';
+			errorMessage = errorMessage + current.u_current_state;
+			errorMessage = errorMessage + ' for a new Task.';
+			gs.addInfoMessage(errorMessage);
+			current.setAbortAction(true);
+		}// end of: default if current	
+	} // end of: if previous == null
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// If State is changing away from anything else
+	////////////////////////////////////////////////////////////////////////////////
+	else {
+		errorMessage = 'Cannot manually set state to: ';
+		errorMessage = errorMessage + current.u_current_state;
+		errorMessage = errorMessage + ' from: ';
+		errorMessage = errorMessage + previous.u_current_state;
+		gs.addInfoMessage(errorMessage);
+		current.setAbortAction(true);	
+	} // end of default else
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 03:50:26</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>cc780446dbe31300dad785184b961951</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - Process changed state</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_cc780446dbe31300dad785184b961951</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 03:50:26</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=cc780446dbe31300dad785184b961951"/>
+</record_update>

@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update node_type="sys_portal_page" unload_date="2018-07-28 18:14:15">
+    <sys_portal_page action="INSERT_OR_UPDATE">
+        <layout/>
+        <order/>
+        <read_roles>x_etask.manager</read_roles>
+        <roles>x_etask.manager</roles>
+        <selectable>true</selectable>
+        <sys_class_name>sys_portal_page</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 06:07:45</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>2df7e04adb271300dad785184b9619b8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Enterprise Tasking Manager Homepage</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_portal_page_2df7e04adb271300dad785184b9619b8</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 06:07:45</sys_updated_on>
+        <title>Enterprise Tasking Manager Homepage</title>
+        <user/>
+        <view>etask_manager_home</view>
+        <related_items_node>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone>dropzone2</dropzone>
+                <offset>1</offset>
+                <page display_value="Enterprise Tasking Manager Homepage">2df7e04adb271300dad785184b9619b8</page>
+                <summary/>
+                <sys_created_by>joseph.adomatis</sys_created_by>
+                <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                <sys_id>2a767246db6b1300dad785184b96195c</sys_id>
+                <sys_mod_count>0</sys_mod_count>
+                <sys_updated_by>joseph.adomatis</sys_updated_by>
+                <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>22767246db6b1300dad785184b96195d</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>22767246db6b1300dad785184b96195e</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>My Assigned Tasks (list)</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>26767246db6b1300dad785184b96195d</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>2a767246db6b1300dad785184b96195d</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>2e767246db6b1300dad785184b96195d</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>list</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>current_page</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>a6767246db6b1300dad785184b96195e</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>2df7e04adb271300dad785184b9619b8</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">2a767246db6b1300dad785184b96195c</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>aa767246db6b1300dad785184b96195c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>9d60ca86dbe71300dad785184b961960</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone>dropzone2</dropzone>
+                <offset>0</offset>
+                <page display_value="Enterprise Tasking Manager Homepage">2df7e04adb271300dad785184b9619b8</page>
+                <summary/>
+                <sys_created_by>joseph.adomatis</sys_created_by>
+                <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                <sys_id>66767246db6b1300dad785184b96195a</sys_id>
+                <sys_mod_count>0</sys_mod_count>
+                <sys_updated_by>joseph.adomatis</sys_updated_by>
+                <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>62767246db6b1300dad785184b96195b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>66767246db6b1300dad785184b96195b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6a767246db6b1300dad785184b96195b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>list</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6e767246db6b1300dad785184b96195a</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6e767246db6b1300dad785184b96195b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>Tasks Awaiting My Approval</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>current_page</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e2767246db6b1300dad785184b96195c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>2df7e04adb271300dad785184b9619b8</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">66767246db6b1300dad785184b96195a</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e6767246db6b1300dad785184b96195a</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>42337a82db6b1300dad785184b9619e2</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone>dropzone1</dropzone>
+                <offset>0</offset>
+                <page display_value="Enterprise Tasking Manager Homepage">2df7e04adb271300dad785184b9619b8</page>
+                <summary/>
+                <sys_created_by>joseph.adomatis</sys_created_by>
+                <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                <sys_id>a2767246db6b1300dad785184b961958</sys_id>
+                <sys_mod_count>0</sys_mod_count>
+                <sys_updated_by>joseph.adomatis</sys_updated_by>
+                <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>current_page</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>22767246db6b1300dad785184b96195a</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>2df7e04adb271300dad785184b9619b8</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>26767246db6b1300dad785184b961958</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>1b5bfd46dbe71300dad785184b961976</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>a2767246db6b1300dad785184b961959</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>bar</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>a6767246db6b1300dad785184b961959</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>aa767246db6b1300dad785184b961958</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>aa767246db6b1300dad785184b961959</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>All Taskers Due for My Groups by Delivery Date</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">a2767246db6b1300dad785184b961958</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>ae767246db6b1300dad785184b961958</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone>dropzone2</dropzone>
+                <offset>2</offset>
+                <page display_value="Enterprise Tasking Manager Homepage">2df7e04adb271300dad785184b9619b8</page>
+                <summary/>
+                <sys_created_by>joseph.adomatis</sys_created_by>
+                <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                <sys_id>ea767246db6b1300dad785184b96195e</sys_id>
+                <sys_mod_count>0</sys_mod_count>
+                <sys_updated_by>joseph.adomatis</sys_updated_by>
+                <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>current_page</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6a767246db6b1300dad785184b961960</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>2df7e04adb271300dad785184b9619b8</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6e767246db6b1300dad785184b96195e</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>7e31fe02db6b1300dad785184b961957</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e2767246db6b1300dad785184b96195f</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e2767246db6b1300dad785184b961960</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>My Groups' Active Tasks (list)</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e6767246db6b1300dad785184b96195f</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>ea767246db6b1300dad785184b96195f</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ea767246db6b1300dad785184b96195e</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>ee767246db6b1300dad785184b96195f</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>list</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone>dropzone0</dropzone>
+                <offset>0</offset>
+                <page display_value="Enterprise Tasking Manager Homepage">2df7e04adb271300dad785184b9619b8</page>
+                <summary/>
+                <sys_created_by>joseph.adomatis</sys_created_by>
+                <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                <sys_id>ee767246db6b1300dad785184b961955</sys_id>
+                <sys_mod_count>0</sys_mod_count>
+                <sys_updated_by>joseph.adomatis</sys_updated_by>
+                <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>62767246db6b1300dad785184b961956</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>f2d17e02db6b1300dad785184b961987</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>current_page</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>6e767246db6b1300dad785184b961957</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>2df7e04adb271300dad785184b9619b8</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e2767246db6b1300dad785184b961957</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>calendar</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e6767246db6b1300dad785184b961956</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>e6767246db6b1300dad785184b961957</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>My Groups' Active Tasks (calendar)</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>ea767246db6b1300dad785184b961956</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2018-07-28 11:29:51">ee767246db6b1300dad785184b961955</portal_section>
+                        <sys_created_by>joseph.adomatis</sys_created_by>
+                        <sys_created_on>2018-07-28 16:29:51</sys_created_on>
+                        <sys_id>ee767246db6b1300dad785184b961956</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>joseph.adomatis</sys_updated_by>
+                        <sys_updated_on>2018-07-28 16:29:51</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+        </related_items_node>
+    </sys_portal_page>
+</record_update>

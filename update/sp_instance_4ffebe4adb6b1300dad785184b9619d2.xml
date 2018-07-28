@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">2dfebe4adb6b1300dad785184b961993</sp_column>
+        <sp_widget display_value="ETASK-Delegate Page">a3d9b686db6b1300dad785184b961962</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 17:07:01</sys_created_on>
+        <sys_id>4ffebe4adb6b1300dad785184b9619d2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_instance_4ffebe4adb6b1300dad785184b9619d2</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 17:07:01</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=4ffebe4adb6b1300dad785184b9619d2"/>
+</record_update>

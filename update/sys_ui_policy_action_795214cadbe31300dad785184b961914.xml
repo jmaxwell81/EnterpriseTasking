@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_policy_action">
+    <sys_ui_policy_action action="INSERT_OR_UPDATE">
+        <disabled>true</disabled>
+        <field>u_associated_task</field>
+        <mandatory>false</mandatory>
+        <sys_class_name>sys_ui_policy_action</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:32:58</sys_created_on>
+        <sys_id>795214cadbe31300dad785184b961914</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>u_associated_task</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_ui_policy_action_795214cadbe31300dad785184b961914</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:32:58</sys_updated_on>
+        <table>x_etask_delegate</table>
+        <ui_policy display_value="ETASK - Global delegate has no Associated task (and reverse)">87e110cadbe31300dad785184b961996</ui_policy>
+        <visible>ignore</visible>
+    </sys_ui_policy_action>
+</record_update>

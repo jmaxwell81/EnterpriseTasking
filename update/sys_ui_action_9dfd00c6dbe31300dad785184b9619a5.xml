@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name>rejectEtaskDeliverable</action_name>
+        <active>true</active>
+        <client>false</client>
+        <comments>If I am the Delivery POC, and the task has been submitted or previously accepted, I can reject the final deliverable. If the parent has already been Accepted, a child task may not be rejected.</comments>
+        <condition>(gs.hasRole('x_etask.admin') || current.u_deliver_to == gs.getUserID()) &amp;&amp; ( current.u_current_state == "Submitted" || current.u_current_state == "Accepted" )</condition>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_context_menu>true</form_context_menu>
+        <form_link>false</form_link>
+        <form_style/>
+        <hint/>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Reject</name>
+        <onclick/>
+        <order>90</order>
+        <script><![CDATA[(function(current, action) {
+	if(current.work_notes != '') {
+	   if (current.parent != '') {
+		   if (current.parent.u_current_state == "Accepted") {
+			   gs.addErrorMessage('Cannot reject a Task with an Accepted Parent.');
+			   action.setRedirectURL(current);
+		   }
+	   }
+	   else {
+			current.u_current_state = "Assigned";
+			current.u_viewed_by_assignee = '';
+			current.update();
+			action.setRedirectURL(current);
+	   }
+	}
+	else {
+		gs.addErrorMessage("Enter a reason for why you are rejecting this Task within Work Notes.");
+		action.setRedirectURL(current);
+	}
+})(current, action);]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:14:38</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>9dfd00c6dbe31300dad785184b9619a5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Reject</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_ui_action_9dfd00c6dbe31300dad785184b9619a5</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:14:38</sys_updated_on>
+        <table>x_etask_enterprise_tasking</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

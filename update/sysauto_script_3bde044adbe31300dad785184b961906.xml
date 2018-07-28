@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>ETASK - Set Negative Due Date</name>
+        <run_as display_value="Jody Adomatis">7f5776b5db231300dad785184b9619b8</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2018-07-28 04:17:34</run_start>
+        <run_time>1970-01-01 08:30:00</run_time>
+        <run_type>daily</run_type>
+        <script><![CDATA[// This scheduled job looks for any ETASKs that are due today or later
+// and sets their Task table due date value to the past version of the
+// delivery date, in order to report upon how soon before the ETASK is due.
+
+// Today
+var now = new GlideDateTime();
+
+var etaskGR = new GlideRecord('x_etask_enterprise_tasking');
+etaskGR.addQuery('u_this_due_date', '>=', now);
+etaskGR.addQuery('u_current_state', '!=', 'Accepted');
+etaskGR.addQuery('active', true);
+etaskGR.query();
+
+while (etaskGR.next()) {
+	//gs.info(etaskGR.number);
+	// ETASK delivery date
+	var etaskDue = new GlideDateTime(etaskGR.u_this_due_date);
+	// Duration between today and the delivery date
+	var difference = GlideDateTime.subtract(now, etaskDue);
+	// Today minus the difference in milliseconds
+ 	now.subtract(difference.getNumericValue());
+	
+ 	etaskGR.due_date = now;
+	etaskGR.update();
+	now = new GlideDateTime();
+}]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:18:45</sys_created_on>
+        <sys_id>3bde044adbe31300dad785184b961906</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - Set Negative Due Date</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sysauto_script_3bde044adbe31300dad785184b961906</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:18:45</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

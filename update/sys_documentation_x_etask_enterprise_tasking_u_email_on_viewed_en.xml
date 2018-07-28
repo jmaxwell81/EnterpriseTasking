@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="u_email_on_viewed" label="Email on first view by assignee" language="en" table="x_etask_enterprise_tasking">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_email_on_viewed</element>
+            <help/>
+            <hint/>
+            <label>Email on first view by assignee</label>
+            <language>en</language>
+            <name>x_etask_enterprise_tasking</name>
+            <plural>Email on first view by assignees</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>joseph.adomatis</sys_created_by>
+            <sys_created_on>2018-07-28 02:08:33</sys_created_on>
+            <sys_id>315133b5dba31300dad785184b96199a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Email on first view by assignee</sys_name>
+            <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+            <sys_update_name>sys_documentation_x_etask_enterprise_tasking_u_email_on_viewed_en</sys_update_name>
+            <sys_updated_by>joseph.adomatis</sys_updated_by>
+            <sys_updated_on>2018-07-28 02:08:33</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

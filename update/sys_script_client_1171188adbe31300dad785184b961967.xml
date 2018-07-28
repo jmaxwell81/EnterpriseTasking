@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>OnChange script for when Task Type changes between Enterprise Task and Action Item on the Enterprise Tasking table.</description>
+        <field>u_this_task_type</field>
+        <global>true</global>
+        <messages/>
+        <name>ETASK - onChange - Task Type</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	if (isLoading || newValue === '') {
+		return;
+	}
+	
+	if(newValue == 'Action Item'){
+		g_form.clearValue('u_child_due_date');
+		g_form.setVisible('u_child_due_date', false);
+	} else {
+		g_form.clearValue('u_child_due_date');
+		g_form.setVisible('u_child_due_date', true);
+	}
+	
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:29:32</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>1171188adbe31300dad785184b961967</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - onChange - Task Type</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_client_1171188adbe31300dad785184b961967</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:29:32</sys_updated_on>
+        <table>x_etask_enterprise_tasking</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

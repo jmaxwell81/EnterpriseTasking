@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_etask_enterprise_tasking</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="x_etask_enterprise_tasking">u_action_delivery_typeVALCHANGES^assigned_toISNOTEMPTY^EQ<item endquery="false" field="u_action_delivery_type" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
+            <item endquery="false" field="assigned_to" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ETASK - Create Child Action Items</name>
+        <order>9000</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	/*
+	All child action items created at the same time have identical values except for assigned_group
+	
+	Once all action items are created, the creation fields on the parent record are cleared.
+	This allows new child action items to be created that have different descriptions and delivery types
+	*/
+	var errorMessage = '';
+	var currentDateTime = new GlideDateTime();
+	var childDueDateTime = new GlideDateTime(current.getValue('u_child_due_date'));
+	
+	if(childDueDateTime.compareTo(currentDateTime) > 0){
+		var groups_list = current.u_child_action_item_group_assignments;
+		var groups = groups_list.split(',');
+
+		for (var i = 0; i < groups.length; i++) {
+			var child = new GlideRecord('x_etask_enterprise_tasking');
+			child.initialize();
+			child.sys_created_by = gs.getUserID();
+			child.setValue('parent', current.getValue('sys_id'));
+			child.setValue('u_current_state', 'Open');
+			child.setValue('u_this_task_type', 'Action Item');
+			child.setValue('u_this_due_date', current.getValue('u_child_due_date'));
+			child.setValue('u_deliver_to', current.getValue('assigned_to'));
+			child.setValue('u_delivery_type', current.getValue('u_action_delivery_type'));
+			child.setValue('assignment_group', groups[i]);
+			child.setValue('short_description', current.getValue('u_action_short_description'));
+			child.setValue('description', current.getValue('u_action_description'));
+			child.insert();
+		}
+
+		current.setValue('u_action_delivery_type', '');
+		current.setValue('u_action_short_description', '');
+		current.setValue('u_action_description', '');
+		current.setValue('u_child_action_item_group_assignments', '');
+	} else {
+		errorMessage = 'Cannot create child tasks when child due date is in the past.';
+		gs.addErrorMessage(errorMessage);
+		current.setAbortAction(true);
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 03:21:49</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>4ab1c842dbe31300dad785184b961988</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - Create Child Action Items</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_4ab1c842dbe31300dad785184b961988</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 03:21:49</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=4ab1c842dbe31300dad785184b961988"/>
+</record_update>

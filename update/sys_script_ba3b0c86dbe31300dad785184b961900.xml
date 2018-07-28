@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_etask_enterprise_tasking</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="x_etask_enterprise_tasking">u_child_delivery_typeVALCHANGES^ORu_child_descriptionVALCHANGES^ORu_child_short_descriptionVALCHANGES^assigned_toISNOTEMPTY^EQ<item endquery="false" field="u_child_delivery_type" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
+            <item endquery="false" field="u_child_description" goto="false" newquery="false" operator="VALCHANGES" or="true" value=""/>
+            <item endquery="false" field="u_child_short_description" goto="false" newquery="false" operator="VALCHANGES" or="true" value=""/>
+            <item endquery="false" field="assigned_to" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ETASK - Update Child Enterprise Tasks</name>
+        <order>9100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var oldGroupList = previous.u_child_enterprise_task_group_assignments;
+	var oldGroups = oldGroupList.split(',');
+	
+	// Existing records need to be updated with new task type, short desc, and desc
+	for (var n = 0; n < oldGroups.length; n++) {
+		var updateEtaskGR = new GlideRecord('x_etask_enterprise_tasking');
+		updateEtaskGR.addQuery('u_this_task_type', 'Enterprise Task');
+		updateEtaskGR.addQuery('assignment_group', oldGroups[n]);
+		updateEtaskGR.addQuery('parent', current.sys_id);
+		updateEtaskGR.query();
+		
+		updateEtaskGR.setValue('short_description', current.u_child_short_description);
+		updateEtaskGR.setValue('description', current.u_child_description);
+		updateEtaskGR.setValue('u_delivery_type', current.u_child_delivery_type);
+		updateEtaskGR.updateMultiple();
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:05:41</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ba3b0c86dbe31300dad785184b961900</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - Update Child Enterprise Tasks</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_ba3b0c86dbe31300dad785184b961900</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:05:41</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=ba3b0c86dbe31300dad785184b961900"/>
+</record_update>

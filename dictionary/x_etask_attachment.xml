@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Attachment" max_length="40" name="x_etask_attachment" type="collection">
+        <element label="Attachment" mandatory="true" max_length="32" name="u_attachment" read_only="true" reference="sys_attachment" type="reference"/>
+        <element choice="1" label="Attachment type" max_length="40" name="u_attachment_type" type="choice">
+            <choice>
+                <element label="Originating Document" sequence="100" value="Originating Document"/>
+                <element label="Delivery Document" sequence="200" value="Delivery Document"/>
+                <element label="Working Document" sequence="300" value="Working Document"/>
+            </choice>
+        </element>
+        <element label="Tasker" mandatory="true" max_length="32" name="u_tasker" read_only="true" reference="x_etask_enterprise_tasking" type="reference"/>
+        <index name="index">
+            <element name="u_tasker"/>
+        </index>
+        <index name="index2">
+            <element name="u_attachment"/>
+        </index>
+    </element>
+</database>

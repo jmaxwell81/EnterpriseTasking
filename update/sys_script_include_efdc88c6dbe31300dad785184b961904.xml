@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_etask.ETASKFilterStateOptions</api_name>
+        <client_callable>true</client_callable>
+        <description>Server-Side GlideAjax script for determining which options should be presented to the user in regards to changing the State of a Enterprise Tasking record.</description>
+        <name>ETASKFilterStateOptions</name>
+        <script><![CDATA[var ETASKFilterStateOptions = Class.create();
+ETASKFilterStateOptions.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	getOptions: function() {
+		var result = this.newItem('result');
+		var currentRecordID = this.getParameter('sysparm_task');
+		var currentSystemUserID = this.getParameter('sysparm_user');
+		var errorMessage = '';
+		
+		var currentUser = new GlideRecord('sys_user');
+		currentUser.addQuery('sys_id', currentSystemUserID);
+		currentUser.query();
+		if(currentUser.next()){
+			errorMessage = '';
+		} else {
+			errorMessage = 'Could not find GlideRecord for current system user.';
+			result.setAttribute('error','true');
+			result.setAttribute('message', errorMessage);
+			return;
+		}
+		
+		var currentRecord = new GlideRecord('x_etask_enterprise_tasking');
+		currentRecord.addQuery('sys_id', currentRecordID);
+		currentRecord.query();
+		if(currentRecord.next()){
+			var delegateList = this._getDelegateList(currentUser.sys_id, currentRecord.sys_id);
+			var delegates = delegateList.split(',');
+			var userUtil = new ETASKUserUtil();
+
+			var i = '';
+			var addCancelled = '';
+			var addProgress = '';
+			var delegate = '';
+
+			switch(currentRecord.u_current_state.toString()){
+				case 'Draft':
+					this._addCurrentValue('Draft');
+					this._addOption('Draft');
+
+					addCancelled = false;
+					if(gs.hasRole('x_etask.admin') || currentRecord.sys_created_by == currentUser.user_name){
+						addCancelled = true;
+					} else {
+						for(i = 0; (i < delegates.length) || (addCancelled == true); i++){
+							delegate = new GlideRecord('sys_user');
+							delegate.addQuery('sys_id', delegates[i]);
+							delegate.query();
+							if(delegate.next()){
+								if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+								   currentRecord.sys_created_by == delegate.user_name){
+									addCancelled = true;
+								}
+							}
+						}
+					}				
+					if(addCancelled == true){
+						this._addOption('Cancelled');
+					}
+					break;
+				case 'Open':
+					this._addCurrentValue('Open');
+					this._addOption('Open');
+						addCancelled = false;
+					if(gs.hasRole('x_etask.admin') || currentRecord.sys_created_by == currentUser.user_name){
+						addCancelled = true;
+					} else {
+						for(i = 0; (i < delegates.length) && (addCancelled == false); i++){
+							delegate = new GlideRecord('sys_user');
+							delegate.addQuery('sys_id', delegates[i]);
+							delegate.query();
+							if(delegate.next()){
+								if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+								   currentRecord.sys_created_by == delegate.user_name){
+									addCancelled = true;
+								}
+							}
+						}
+					}				
+					if(addCancelled == true){
+						this._addOption('Cancelled');
+					}
+					break;
+
+				case 'Assigned':
+					this._addCurrentValue('Assigned');
+					this._addOption('Assigned');
+						addProgress = false;
+					if(currentRecord.assigned_to == currentUser.sys_id){
+						addProgress = true;
+					}
+					addCancelled = false;
+					if(gs.hasRole('x_etask.admin') || currentRecord.sys_created_by == currentUser.user_name){
+						addCancelled = true;
+					}
+					for(i = 0; (i < delegates.length); i++){
+						delegate = new GlideRecord('sys_user');
+						delegate.addQuery('sys_id', delegates[i]);
+						delegate.query();
+						if(delegate.next()){
+							if(currentRecord.assigned_to == delegate.sys_id){
+								addProgress = true;
+							}
+							if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+							   currentRecord.sys_created_by == delegate.user_name){
+								addCancelled = true;
+							}						
+						}
+					}
+					if(addProgress == true){
+						this._addOption('In Progress');
+					}
+					if(addCancelled == true){
+						this._addOption('Cancelled');
+					}
+					break;
+
+				case 'In Progress':
+					this._addCurrentValue('In Progress');
+					this._addOption('In Progress');
+						addCancelled = false;
+					if(gs.hasRole('x_etask.admin') || currentRecord.sys_created_by == currentUser.user_name){
+						addCancelled = true;
+					} else {
+						for(i = 0; (i < delegates.length) && (addCancelled == false); i++){
+							delegate = new GlideRecord('sys_user');
+							delegate.addQuery('sys_id', delegates[i]);
+							delegate.query();
+							if(delegate.next()){
+								if(userUtil.hasRole(delegate.sys_id, 'x_etask.admin') ||
+								   currentRecord.sys_created_by == delegate.user_name){
+									addCancelled = true;
+								}
+							}
+						}
+					}				
+					if(addCancelled == true){
+						this._addOption('Cancelled');
+					}
+					break;
+				
+				case 'Submitted':
+					this._addCurrentValue('Submitted');
+					this._addOption('Submitted');
+					break;
+				
+				case 'Accepted':
+					this._addCurrentValue('Accepted');
+					this._addOption('Accepted');
+					break;
+
+				case 'Closed':
+					this._addCurrentValue('Closed');
+					this._addOption('Closed');
+					break;
+
+				case 'Cancelled':
+					this._addCurrentValue('Cancelled');
+					this._addOption('Cancelled');
+					break;
+
+				default:
+					this._addCurrentValue('Draft');
+					this._addOption('Draft');
+					break;
+			} // end of: switch by State
+
+			result.setAttribute('error','false');
+			result.setAttribute('message', '');
+		} else {
+			errorMessage = 'New Task';
+			result.setAttribute('error','true');
+			result.setAttribute('message', errorMessage);
+			return;
+		}
+	},
+	
+	_addCurrentValue: function(value){
+		var curValue = this.newItem("CurrentValue");
+		curValue.setAttribute("value",value);		
+	},
+	
+	_addOption: function(value){
+		var listOption = this.newItem("ListOption");
+		listOption.setAttribute("value",value);
+	},
+	
+	_getDelegateList: function(userID, taskID){
+		var returnString = '';
+		var currentDateTime = new GlideDateTime();
+		var userUtil = new ETASKUserUtil();
+		var delegates = new GlideRecord('x_etask_delegate');
+		delegates.addQuery('u_user', userID);
+		delegates.addQuery('u_global', true).addOrCondition('u_associated_task', taskID);
+		delegates.query();
+		while(delegates.next()){
+			var dateTime = '';
+			var delegate = new GlideRecord('sys_user');
+			delegate.addQuery('user_name', delegates.getValue('sys_created_by'));
+			delegate.query();
+			delegate.next();
+			var activeDelegate = true;
+			if(delegates.getValue('u_starts') != ''){
+				dateTime = new GlideDateTime(delegates.getValue('u_starts'));
+				if(currentDateTime.compareTo(dateTime) >= 0){
+					activeDelegate = true;
+				} else {
+					activeDelegate = false;
+				}
+			}
+			if(delegates.getValue('u_ends') != ''){
+				dateTime = new GlideDateTime(delegates.getValue('u_ends'));
+				if(currentDateTime.compareTo(dateTime) <= 0){
+					activeDelegate = true;
+				} else {
+					activeDelegate = false;
+				}
+			}
+			if(activeDelegate == true){
+				returnString = returnString + delegate.getValue('sys_id') + ',';
+			}
+		}
+		returnString = returnString.toString().slice(0, -1);
+		return returnString;		
+	},
+	
+    type: 'ETASKFilterStateOptions'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:09:20</sys_created_on>
+        <sys_id>efdc88c6dbe31300dad785184b961904</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASKFilterStateOptions</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_include_efdc88c6dbe31300dad785184b961904</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:09:20</sys_updated_on>
+    </sys_script_include>
+</record_update>

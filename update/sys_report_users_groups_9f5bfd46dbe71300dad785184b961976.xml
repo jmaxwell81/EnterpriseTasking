@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_report_users_groups">
+    <sys_report_users_groups action="INSERT_OR_UPDATE">
+        <group_id/>
+        <report_id display_value="All Taskers Due for My Groups by Delivery Date">1b5bfd46dbe71300dad785184b961976</report_id>
+        <sys_class_name>sys_report_users_groups</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 12:11:35</sys_created_on>
+        <sys_id>9f5bfd46dbe71300dad785184b961976</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1b5bfd46dbe71300dad785184b961976</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_report_users_groups_9f5bfd46dbe71300dad785184b961976</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 12:11:35</sys_updated_on>
+        <user_id display_value="Jody Adomatis">7f5776b5db231300dad785184b9619b8</user_id>
+    </sys_report_users_groups>
+</record_update>

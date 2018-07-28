@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_etask.ETASKUserUtil</api_name>
+        <client_callable>false</client_callable>
+        <description>Utility class to provide functions for hasRole and isMemberOf for use with non-current userIDs</description>
+        <name>ETASKUserUtil</name>
+        <script><![CDATA[var ETASKUserUtil = Class.create();
+ETASKUserUtil.prototype = {
+    initialize: function() {
+    },
+	
+	hasRole: function(userID, roleName){
+		var testRole = new GlideRecord('sys_user_role');
+		testRole.addQuery('name', roleName);
+		testRole.query();
+		if(testRole.next()){
+			var checkUser = new GlideRecord('sys_user_has_role');
+			checkUser.addQuery('user', userID);
+			checkUser.addQuery('role', testRole.sys_id);
+			checkUser.query();
+			if(checkUser.next()){
+				return true;
+			} else {
+				return false;
+			}				
+		} else {
+			return false;
+		}
+	},
+	
+	isMemberOf: function(userID, groupID){
+		var checkUser = new GlideRecord('sys_user_grmember');
+		checkUser.addQuery('user', userID);
+		checkUser.addQuery('group', groupID);
+		checkUser.query();
+		if(checkUser.next()){
+			return true;
+		} else {
+			return false;
+		}
+	},
+
+    type: 'ETASKUserUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:10:59</sys_created_on>
+        <sys_id>a73d88c6dbe31300dad785184b961973</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASKUserUtil</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_include_a73d88c6dbe31300dad785184b961973</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:10:59</sys_updated_on>
+    </sys_script_include>
+</record_update>

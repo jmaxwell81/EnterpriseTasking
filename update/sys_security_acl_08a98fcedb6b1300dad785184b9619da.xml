@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_security_acl">
+    <sys_security_acl action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <admin_overrides>false</admin_overrides>
+        <advanced>true</advanced>
+        <condition/>
+        <description>Field level Create control for the Child Action Item Group Assignments field on the Enterprise Tasking table of the Enterprise Tasking application</description>
+        <name>x_etask_enterprise_tasking.u_child_action_item_group_assignments</name>
+        <operation display_value="create">create</operation>
+        <script><![CDATA[answer = false;]]></script>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 17:53:31</sys_created_on>
+        <sys_id>08a98fcedb6b1300dad785184b9619da</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_etask_enterprise_tasking.u_child_action_item_group_assignments</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_security_acl_08a98fcedb6b1300dad785184b9619da</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 17:53:31</sys_updated_on>
+        <type display_value="record">record</type>
+    </sys_security_acl>
+</record_update>

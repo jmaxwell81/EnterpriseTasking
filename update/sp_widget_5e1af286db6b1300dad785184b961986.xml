@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>etask-task-page</id>
+        <internal>false</internal>
+        <link/>
+        <name>ETASK-Task Page</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	
+	var taskGR = new GlideRecord("x_etask_enterprise_tasking");
+	taskGR.get($sp.getParameter('sys_id'));
+	data.isValid = taskGR.getValue('number') == null ? false : true;
+
+	if (data.isValid) {
+		data.number = taskGR.getValue('number');
+		data.assignment_group = taskGR.getDisplayValue('assignment_group');
+		data.assigned_to = taskGR.getDisplayValue('assigned_to');
+		data.sys_id = $sp.getParameter('sys_id');
+		data.due_date = taskGR.getDisplayValue('u_this_due_date');
+		data.child_due_date = taskGR.getDisplayValue('u_child_due_date');
+		data.created = taskGR.getValue('sys_created_on');
+		data.state = taskGR.getDisplayValue('u_current_state');
+		data.deliver_to = taskGR.getValue('u_deliver_to');
+		data.short_description = taskGR.getDisplayValue('short_description') || 'Short Description';
+		data.description = taskGR.getValue('description');
+		data.u_delivery_type = taskGR.getDisplayValue('u_delivery_type');
+		data.type = taskGR.getValue('u_this_task_type');
+		data.parent = taskGR.getValue('parent');
+		//data.categories = taskGR.getValue('');
+		data.created_by = taskGR.getValue('sys_created_by');
+		data.delivery_type = taskGR.getValue('u_delivery_type');
+		data.viewed_by_assignee = taskGR.getValue('u_viewed_by_assignee');
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 16:45:40</sys_created_on>
+        <sys_id>5e1af286db6b1300dad785184b961986</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>ETASK-Task Page</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_widget_5e1af286db6b1300dad785184b961986</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 16:46:33</sys_updated_on>
+        <template><![CDATA[<div ng-if="data.isValid" class="panel panel-{{options.color}} b">
+
+  <div class="panel-heading">
+    <h4 class="panel-title">{{::data.short_description}}<span class="pull-right">{{::data.number}}</span></h4>
+  </div>
+
+  <div class="panel-body m-b-lg wrapper-lg">
+    <div class="data-row row m-b-lg b-b">
+        <span ng-if="data.state" class="pad-right">
+          <glyph sn-char="pencil" class="pad-right" />
+          ${State: }
+        </span>
+        <span class="published pad-right">
+          <glyph sn-char="calendar" class="pad-right" />
+          <sn-day-ago date="data.opened"/>
+        </span>
+        <span ng-if="data.points" class="pad-right">
+          <glyph class="pad-right fa fa-hashtag" />
+          ${Story Points: }
+        </span>
+				<span ng-if="data.release" class="pad-right">
+          <glyph class="pad-right" />
+          ${Release: }
+        </span>
+				<span ng-if="data.assigned_to" class="pad-right">
+          <glyph sn-char="pencil" class="pad-right" />
+          ${Assigned To: {{::data.assigned_to}}}
+        </span>
+      
+    </div>
+
+    <div ng-bind-html="::data.description" style="overflow-x:auto;"></div>
+
+  </div>
+</div>
+
+<div ng-if="!data.isValid">
+  ${Task not found}
+</div>]]></template>
+    </sp_widget>
+</record_update>

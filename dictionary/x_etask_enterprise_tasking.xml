@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element audit="true" extends="task" label="Enterprise Tasking" max_length="40" name="x_etask_enterprise_tasking" sizeclass="1" type="collection">
+        <element choice="3" default="Document" label="Child delivery type" max_length="40" name="u_action_delivery_type" type="choice">
+            <choice>
+                <element label="Document" sequence="100" value="Document"/>
+                <element label="Work Info" sequence="200" value="Work Info"/>
+            </choice>
+        </element>
+        <element label="Child description" max_length="9000" name="u_action_description" type="string"/>
+        <element label="Child short description" max_length="200" name="u_action_short_description" type="string"/>
+        <element label="Group assignments" max_length="4000" name="u_child_action_item_group_assignments" reference="sys_user_group" type="glide_list"/>
+        <element choice="3" default="Document" label="Child delivery type" max_length="40" name="u_child_delivery_type" type="choice">
+            <choice>
+                <element label="Document" sequence="100" value="Document"/>
+                <element label="Work Info" sequence="200" value="Work Info"/>
+            </choice>
+        </element>
+        <element label="Child description" max_length="9000" name="u_child_description" type="string"/>
+        <element label="Child tasks must deliver by" max_length="40" name="u_child_due_date" type="glide_date_time"/>
+        <element label="Group assignments" max_length="4000" name="u_child_enterprise_task_group_assignments" reference="sys_user_group" type="glide_list"/>
+        <element label="Child short description" max_length="200" name="u_child_short_description" type="string"/>
+        <element choice="3" default="Draft" label="State" max_length="40" name="u_current_state" type="choice">
+            <choice>
+                <element label="Draft" sequence="100" value="Draft"/>
+                <element label="Open" sequence="200" value="Open"/>
+                <element label="Assigned" sequence="300" value="Assigned"/>
+                <element label="In Progress" sequence="400" value="In Progress"/>
+                <element label="Submitted" sequence="500" value="Submitted"/>
+                <element label="Accepted" sequence="600" value="Accepted"/>
+                <element label="Closed" sequence="700" value="Closed"/>
+                <element label="Cancelled" sequence="800" value="Cancelled"/>
+            </choice>
+        </element>
+        <element choice="1" label="Delivery type" mandatory="true" max_length="40" name="u_delivery_type" type="choice">
+            <choice>
+                <element label="Document" sequence="100" value="Document"/>
+                <element label="Work Info" sequence="200" value="Work Info"/>
+            </choice>
+        </element>
+        <element label="Deliver to" mandatory="true" max_length="32" name="u_deliver_to" reference="sys_user" type="reference"/>
+        <element label="Email on first view by assignee" max_length="40" name="u_email_on_viewed" type="boolean"/>
+        <element label="Task categories" max_length="4000" name="u_task_categories" reference="x_etask_category" type="glide_list"/>
+        <element label="Must deliver this task by" mandatory="true" max_length="40" name="u_this_due_date" type="glide_date_time"/>
+        <element choice="1" label="Task type" mandatory="true" max_length="40" name="u_this_task_type" type="choice">
+            <choice>
+                <element label="Enterprise Task" sequence="100" value="Enterprise Task"/>
+                <element label="Action Item" sequence="200" value="Action Item"/>
+            </choice>
+        </element>
+        <element label="Viewed by assignee" max_length="40" name="u_viewed_by_assignee" read_only="true" type="glide_date_time"/>
+    </element>
+</database>

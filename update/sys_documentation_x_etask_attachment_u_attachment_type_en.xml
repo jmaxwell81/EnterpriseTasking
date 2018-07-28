@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="u_attachment_type" label="Attachment type" language="en" table="x_etask_attachment">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_attachment_type</element>
+            <help/>
+            <hint/>
+            <label>Attachment type</label>
+            <language>en</language>
+            <name>x_etask_attachment</name>
+            <plural>Attachment types</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>joseph.adomatis</sys_created_by>
+            <sys_created_on>2018-07-28 02:47:12</sys_created_on>
+            <sys_id>083a373ddba31300dad785184b961952</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Attachment type</sys_name>
+            <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+            <sys_update_name>sys_documentation_x_etask_attachment_u_attachment_type_en</sys_update_name>
+            <sys_updated_by>joseph.adomatis</sys_updated_by>
+            <sys_updated_on>2018-07-28 02:47:12</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

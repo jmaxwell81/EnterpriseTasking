@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Delegate" max_length="40" name="x_etask_delegate" type="collection">
+        <element label="Associated Task" max_length="32" name="u_associated_task" reference="x_etask_enterprise_tasking" type="reference"/>
+        <element label="Ends" max_length="40" name="u_ends" type="glide_date_time"/>
+        <element label="Global" max_length="40" name="u_global" type="boolean"/>
+        <element label="Starts" max_length="40" name="u_starts" type="glide_date_time"/>
+        <element label="User" mandatory="true" max_length="32" name="u_user" reference="sys_user" type="reference"/>
+        <index name="index">
+            <element name="u_associated_task"/>
+        </index>
+        <index name="index2">
+            <element name="u_user"/>
+        </index>
+    </element>
+</database>

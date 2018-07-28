@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {  /* widget controller */  var c = this;}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>etask-child-tasks</id>
+        <internal>false</internal>
+        <link/>
+        <name>ETASK-Child Tasks</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	
+	data.childSys = [];
+	data.childNum = [];
+	var childGR = new GlideRecord('x_etask_enterprise_tasking');
+	childGR.addQuery($sp.getParameter('id'), $sp.getParameter('sys_id'));
+	childGR.query();
+
+	while(childGR.next()) {
+		data.isValid = true;
+		data.childSys.push("/etp?sys_id=" + childGR.sys_id.toString() + "&view=sp&id=etask_task_details&table=x_etask_enterprise_tasking");
+		data.childNum.push(childGR.number.toString());
+	}
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 16:43:02</sys_created_on>
+        <sys_id>bf79ba46db6b1300dad785184b961923</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>ETASK-Child Tasks</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_widget_bf79ba46db6b1300dad785184b961923</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 16:43:52</sys_updated_on>
+        <template><![CDATA[<div ng-if="data.isValid" class="panel panel-{{options.color}} b">
+
+  <div class="panel-heading">
+    <h4 class="panel-title">Child Tasks</h4>
+  </div>
+  
+  <div class="panel-body">
+    <ul>
+      <li ng-repeat="item in ::data.childSys"><a href="{{ item }}">{{ ::data.childNum[$index] }}</a></li>
+    </ul>  
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

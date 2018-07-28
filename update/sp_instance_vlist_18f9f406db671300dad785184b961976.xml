@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_instance_vlist">
+    <sp_instance_vlist action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <display_field>sys_created_by</display_field>
+        <field_list/>
+        <filter table="x_etask_delegate">u_ends&gt;=javascript:gs.beginningOfToday()^ORu_startsISEMPTY^u_user=javascript:gs.getUserID()<item endquery="false" field="u_ends" goto="false" newquery="false" operator="&gt;=" or="false" value="javascript:gs.beginningOfToday()"/>
+            <item endquery="false" field="u_starts" goto="false" newquery="false" operator="ISEMPTY" or="true" value=""/>
+            <item endquery="false" field="u_user" goto="false" newquery="false" operator="=" or="false" value="javascript:gs.getUserID()"/>
+        </filter>
+        <glyph/>
+        <id/>
+        <maximum_entries>5</maximum_entries>
+        <order>5</order>
+        <order_by/>
+        <order_direction>asc</order_direction>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="3">68a6f082db671300dad785184b96194b</sp_column>
+        <sp_page display_value="form">ed5f8ec347730200ba13a5554ee49046</sp_page>
+        <sp_widget display_value="Simple List">5b255672cb03020000f8d856634c9c28</sp_widget>
+        <sys_class_name>sp_instance_vlist</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 07:25:45</sys_created_on>
+        <sys_id>18f9f406db671300dad785184b961976</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>To Whom I Am a Delegate</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_instance_vlist_18f9f406db671300dad785184b961976</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 17:43:27</sys_updated_on>
+        <table>x_etask_delegate</table>
+        <title>To Whom I Am a Delegate</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"always_show": {
+		"value": "",
+		"displayValue": ""
+	},
+	"panel_body_height": {
+		"value": "",
+		"displayValue": ""
+	},
+	"image_field": {
+		"value": "",
+		"displayValue": ""
+	},
+	"secondary_fields": {
+		"value": "",
+		"displayValue": ""
+	},
+	"rounded_images": {
+		"value": "",
+		"displayValue": ""
+	},
+	"list_page": {
+		"value": "d5903c8edb271300dad785184b96196c",
+		"displayValue": "etask_to_whom_i_am_a_delegate"
+	},
+	"hide_footer": {
+		"value": "",
+		"displayValue": ""
+	},
+	"view": {
+		"value": "",
+		"displayValue": ""
+	}
+}]]></widget_parameters>
+    </sp_instance_vlist>
+    <sys_translated_text action="delete_multiple" query="documentkey=18f9f406db671300dad785184b961976"/>
+</record_update>

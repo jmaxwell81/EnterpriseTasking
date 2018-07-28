@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_etask_enterprise_tasking</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="x_etask_enterprise_tasking">u_child_enterprise_task_group_assignmentsVALCHANGES^ORu_child_enterprise_task_group_assignmentsCHANGESFROM^assigned_toISNOTEMPTY^EQ<item endquery="false" field="u_child_enterprise_task_group_assignments" goto="false" newquery="false" operator="VALCHANGES" or="false" value=""/>
+            <item endquery="false" field="u_child_enterprise_task_group_assignments" goto="false" newquery="false" operator="CHANGESFROM" or="true" value=""/>
+            <item endquery="false" field="assigned_to" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ETASK - Create Child Enterprise Tasks</name>
+        <order>9000</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	/*
+	All child enterprise tasks for a given parent enterprise task must have identical values except for assigned group
+	This is true not just for all child tasks created at the same time... but also for previously created child tasks
+	So unlike action items, we have to keep track of previously created child tasks and cannot clear out the values after insert
+	
+	First we check to see if the group in the current list of assignment groups has previously had a ticket created
+	If not, we create one and note that we created it
+	Once we've done this for all currently listed groups we update the value of the group list with all of the oldGroups as well
+	as any of the newly added groups.  This means that users cannot delete/cancel child tasks by removing groups from the list.
+	
+	To cancel a child task, the creator or admin must open the task itself set the state to cancelled.
+	The state change business rule will handle updating the group assignment string on the parent.
+	*/
+	
+	var errorMessage = '';
+	var currentDateTime = new GlideDateTime();
+	var childDueDateTime = new GlideDateTime(current.getValue('u_child_due_date'));
+	
+	if(childDueDateTime.compareTo(currentDateTime) > 0){
+		var oldGroupList = '';
+		var oldGroups = '';
+
+		if (previous.u_child_enterprise_task_group_assignments != '') {
+			oldGroupList = previous.u_child_enterprise_task_group_assignments;
+			oldGroups = oldGroupList.split(',');
+		}
+
+		var newGroupList = current.u_child_enterprise_task_group_assignments;
+		var newGroups = newGroupList.split(',');
+
+		var addedGroups = [];
+
+		for (var i = 0; i < newGroups.length; i++){
+			var found = false;
+			if (oldGroups != '') {
+				for (var j = 0; ((j < oldGroups.length) && (found == false)); j++) {
+					if(newGroups[i] == oldGroups[j]){
+						found = true;
+					}
+				}
+			}
+
+			if (found == false && newGroups[i] != null) {
+				addedGroups.push(newGroups[i]);
+				var child = new GlideRecord('x_etask_enterprise_tasking');
+				child.initialize();
+				child.sys_created_by = gs.getUserID();
+				child.setValue('parent', current.sys_id);
+				child.setValue('u_this_task_type', 'Enterprise Task');
+				child.setValue('u_this_due_date', current.u_child_due_date);
+				child.setValue('u_deliver_to', current.assigned_to);
+				child.setValue('u_delivery_type', current.u_child_delivery_type);
+				child.setValue('assignment_group', newGroups[i]);
+				child.setValue('short_description', current.u_child_short_description);
+				child.setValue('description', current.u_child_description);
+				child.insert();
+			}
+		} 
+
+		var revisedGroupString = '';
+		var group = '';
+		if (oldGroups != '') {
+			for (group in oldGroups){
+				revisedGroupString = revisedGroupString + oldGroups[group] + ',';
+			}
+		}
+		for (group in addedGroups){
+			revisedGroupString = revisedGroupString + addedGroups[group] + ',';
+		}
+
+		current.setValue('u_child_enterprise_task_group_assignments', revisedGroupString.toString().trim());
+	} else {
+		errorMessage = 'Cannot create child tasks when child due date is in the past.';
+		gs.addErrorMessage(errorMessage);
+		current.setAbortAction(true);
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 03:24:00</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>16324082dbe31300dad785184b9619a4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - Create Child Enterprise Tasks</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_16324082dbe31300dad785184b9619a4</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 03:24:00</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=16324082dbe31300dad785184b9619a4"/>
+</record_update>

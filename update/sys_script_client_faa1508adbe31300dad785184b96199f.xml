@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>When Enterprise Tasking record loads, filter the possible choices for setting a new state based on current user, record creator, record assignee, and current state</description>
+        <field>active</field>
+        <global>true</global>
+        <messages/>
+        <name>ETASK - onLoad</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+	var currentRecord = g_form.getUniqueValue();
+	var currentSystemUser = g_user.userID;
+	var getETASKUser = '';
+	
+	var sections = g_form.getSectionNames();		
+		
+	if(g_form.getValue('u_this_task_type') == '' || g_form.getValue('u_this_task_type') == 'Action Item'){
+		g_form.setSectionDisplay('child_enterprisetaskcreation', false);
+		g_form.setSectionDisplay('child_actionitemcreation', false);		
+	}
+	
+	if(g_form.getValue('assignment_group') == ''){
+		g_form.setSectionDisplay('child_enterprisetaskcreation', false);
+		g_form.setSectionDisplay('child_actionitemcreation', false);
+		g_form.setSectionDisplay('work_notes', false);
+	}
+	
+	if(g_form.getValue('assigned_to') != currentSystemUser){
+		g_form.setSectionDisplay('child_enterprisetaskcreation', false);
+		g_form.setSectionDisplay('child_actionitemcreation', false);		
+	}	
+	
+	if(g_form.getValue('u_current_state') == 'Assigned'){
+		if(g_form.getValue('u_viewed_by_assignee') == ''){
+			if(g_form.getValue('assigned_to') == g_user.userID){
+				var getNowDateTime = new GlideAjax('ETASKGlideDateTimeUtil');
+				getNowDateTime.addParam('sysparm_name', 'getNow');
+				getNowDateTime.getXML(updateViewedByAssigneeViaAjaxGetNowResponse);	
+			}
+		}		
+	}
+		
+	var getStateOptions = new GlideAjax('ETASKFilterStateOptions');
+	getStateOptions.addParam('sysparm_name', 'getOptions');
+	getStateOptions.addParam('sysparm_task', currentRecord);
+	getStateOptions.addParam('sysparm_user', currentSystemUser);
+	getStateOptions.getXML(ETASKFilterStateOptionsParse);
+}
+
+function updateViewedByAssigneeViaAjaxGetNowResponse(serverResponse){
+	var result = serverResponse.responseXML.getElementsByTagName('result');
+	var nowDateTime = result[0].getAttribute('now');
+	g_form.setValue('u_viewed_by_assignee', nowDateTime);
+}
+
+function ETASKFilterStateOptionsParse(serverResponse){
+	var result = serverResponse.responseXML.getElementsByTagName('result');
+	var error = result[0].getAttribute('error');
+	var message = result[0].getAttribute('message');
+	var currentState = g_form.getValue('u_current_state');
+	if(error == 'false'){
+		g_form.clearOptions('u_current_state');
+		var listOptions = serverResponse.responseXML.getElementsByTagName('ListOption');
+		for(var i = 0; i < listOptions.length; i ++) { 
+			var value = listOptions[i].getAttribute('value');
+			g_form.addOption('u_current_state', value, value);
+		}
+		var currentValues = serverResponse.responseXML.getElementsByTagName('CurrentValue');
+		var currentValue = currentValues[0].getAttribute('value');
+		g_form.setValue('u_current_state', currentValue);
+	} else {
+		g_form.clearOptions('u_current_state');
+		g_form.setValue('u_current_state', currentState);
+		if(message == 'New Task'){
+			g_form.clearOptions('u_current_state');
+			g_form.setDisplay('u_current_state', false);
+		} else {
+			alert(message);
+		}		
+	}	
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:30:29</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>faa1508adbe31300dad785184b96199f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASK - onLoad</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_client_faa1508adbe31300dad785184b96199f</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:30:29</sys_updated_on>
+        <table>x_etask_enterprise_tasking</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

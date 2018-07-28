@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_etask.ETASKAssignedToFromAssignmentGroup</api_name>
+        <client_callable>false</client_callable>
+        <description>Reference Qualifer to provide only list of users in a specified group</description>
+        <name>ETASKAssignedToFromAssignmentGroup</name>
+        <script><![CDATA[function ETASKAssignedToFromAssignmentGroup(groupID){
+	var outputList = '';
+	var groupMembers = new GlideRecord('sys_user_grmember');
+	groupMembers.addQuery('group', groupID);
+	groupMembers.query();
+	while(groupMembers.next()){
+		outputList = outputList + 'sys_id=' + groupMembers.user + '^OR';
+	}
+	if(outputList != ''){
+		outputList = outputList.slice(0, -3);
+	} else {
+		outputList = 'sys_id=GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG';
+	}
+	return outputList;
+}]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:07:34</sys_created_on>
+        <sys_id>fd7c4cc6dbe31300dad785184b961933</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASKAssignedToFromAssignmentGroup</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_include_fd7c4cc6dbe31300dad785184b961933</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:07:34</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_etask.ETASKGlideDateTimeUtil</api_name>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>ETASKGlideDateTimeUtil</name>
+        <script><![CDATA[var ETASKGlideDateTimeUtil = Class.create();
+ETASKGlideDateTimeUtil.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	getNow: function(){
+		var result = this.newItem('result');
+		var nowDateTimeUTC = new GlideDateTime();
+		var nowDateLocal = nowDateTimeUTC.getLocalDate();
+		var nowTimeLocal = nowDateTimeUTC.getLocalTime();
+		var nowTimeLocalFormatted = nowTimeLocal.getByFormat('hh:mm:ss');
+		var nowDateTimeLocal = nowDateLocal.toString() + ' ' + nowTimeLocalFormatted.toString();
+		result.setAttribute('now', nowDateTimeLocal);
+	},
+	
+	compareTimes: function(){
+		var dateTimeOneText = this.getParameter('sysparm_dateTimeOne');
+		var dateTimeTwoText = this.getParameter('sysparm_dateTimeTwo');
+		var dateTimeOne = new GlideDateTime(dateTimeOneText);
+		var dateTimeTwo = new GlideDateTime(dateTimeTwoText);
+		var result = this.newItem('result');
+		switch(dateTimeOne.compareTo(dateTimeTwo)){
+			case -1:
+				result.setAttribute('tense', 'past');
+				break;
+			case 0:
+				result.setAttribute('tense', 'present');
+				break;
+			case 1:
+				result.setAttribute('tense', 'future');
+				break;
+			default:
+				result.setAttribute('tense', 'error');
+				break;
+		}
+	},
+	
+	checkFuture: function(){
+		var submitted = this.getParameter('sysparm_submitted');
+		var proposedDateTimeLocal = new GlideDateTime(submitted);
+		
+		var nowDateTimeUTC = new GlideDateTime();
+		var nowDateLocal = nowDateTimeUTC.getLocalDate();
+		var nowTimeLocal = nowDateTimeUTC.getLocalTime();
+		var nowTimeLocalFormatted = nowTimeLocal.getByFormat('hh:mm:ss');
+		
+		var futureDateTimeUTC = new GlideDateTime(nowDateTimeUTC);
+		futureDateTimeUTC.addDaysUTC(1);
+		var futureDateLocal = futureDateTimeUTC.getLocalDate();
+		
+		var nowDateTimeLocal = new GlideDateTime(nowDateLocal.toString() + ' ' + nowTimeLocalFormatted);
+		var result = this.newItem('result');
+		if(proposedDateTimeLocal.compareTo(nowDateTimeLocal) >= 0){
+			result.setAttribute('future', 'true');
+		} else {
+			result.setAttribute('future', 'false');
+		}
+		result.setAttribute('futureDate', futureDateLocal.toString() + ' 00:00:00');		
+	},
+	
+	multiCompare: function(){
+		var dateTimeOneText = this.getParameter('sysparm_dateTimeOne');
+		var dateTimeTwoText = this.getParameter('sysparm_dateTimeTwo');
+		var dateTimeOne = new GlideDateTime(dateTimeOneText);
+		var dateTimeTwo = new GlideDateTime(dateTimeTwoText);
+		
+		var nowDateTimeUTC = new GlideDateTime();
+		var nowDateLocal = nowDateTimeUTC.getLocalDate();
+		var nowTimeLocal = nowDateTimeUTC.getLocalTime();
+		var nowTimeLocalFormatted = nowTimeLocal.getByFormat('hh:mm:ss');
+		var nowDateTimeLocal = new GlideDateTime(nowDateLocal.toString() + ' ' + nowTimeLocalFormatted);		
+		
+		var result = this.newItem('result');
+				
+		switch(dateTimeOne.compareTo(dateTimeTwo)){
+			case -1:
+				result.setAttribute('compareTense', 'past');
+				break;
+			case 0:
+				result.setAttribute('compareTense', 'present');
+				break;
+			case 1:
+				result.setAttribute('compareTense', 'future');
+				break;
+			default:
+				result.setAttribute('compareTense', 'error');
+				break;
+		}
+		
+		var compareFutureDateTime = new GlideDateTime(dateTimeTwo);
+		var compareMorningDateTime = new GlideDateTime(dateTimeTwo);
+		var comparePastDateTime = new GlideDateTime(dateTimeTwo);
+		compareFutureDateTime.addDaysUTC(1);
+		comparePastDateTime.addDaysUTC(-1);			
+		result.setAttribute('compareFutureDate', compareFutureDateTime.getDate() + ' 00:00:00');
+		result.setAttribute('compareMorningDate', compareMorningDateTime.getDate() + ' 00:00:00');
+		result.setAttribute('comparePastDate', comparePastDateTime.getDate() + ' 00:00:00');
+		
+		switch(dateTimeOne.compareTo(nowDateTimeLocal)){
+			case -1:
+				result.setAttribute('futureTenseOne', 'past');
+				break;
+			case 0:
+				result.setAttribute('futureTenseOne', 'present');
+				break;
+			case 1:
+				result.setAttribute('futureTenseOne', 'future');
+				break;
+			default:
+				result.setAttribute('futureTenseOne', 'error');
+				break;
+		}
+		
+		switch(dateTimeTwo.compareTo(nowDateTimeLocal)){
+			case -1:
+				result.setAttribute('futureTenseTwo', 'past');
+				break;
+			case 0:
+				result.setAttribute('futureTenseTwo', 'present');
+				break;
+			case 1:
+				result.setAttribute('futureTenseTwo', 'future');
+				break;
+			default:
+				result.setAttribute('futureTenseTwo', 'error');
+				break;
+		}
+			
+		var futureFutureDateTime = new GlideDateTime(nowDateTimeUTC);
+		var futureMorningDateTime = new GlideDateTime(nowDateTimeUTC);
+		var futurePastDateTime = new GlideDateTime(nowDateTimeUTC);
+		futureFutureDateTime.addDaysUTC(1);
+		futurePastDateTime.addDaysUTC(-1);
+		var futureFutureDateLocal = futureFutureDateTime.getLocalDate();
+		var futureMorningDateLocal = futureMorningDateTime.getLocalDate();
+		var futurePastDateLocal = futurePastDateTime.getLocalDate();
+		
+		result.setAttribute('futureFutureDate', futureFutureDateLocal.toString() + ' 00:00:00');
+		result.setAttribute('futureMorningDate', futureMorningDateLocal.toString() + ' 00:00:00');
+		result.setAttribute('futurePastDate', futurePastDateLocal.toString() + ' 00:00:00');
+	},
+	
+    type: 'ETASKGlideDateTimeUtil'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-28 04:09:57</sys_created_on>
+        <sys_id>730d0486dbe31300dad785184b96197c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ETASKGlideDateTimeUtil</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sys_script_include_730d0486dbe31300dad785184b96197c</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-07-28 04:09:57</sys_updated_on>
+    </sys_script_include>
+</record_update>
