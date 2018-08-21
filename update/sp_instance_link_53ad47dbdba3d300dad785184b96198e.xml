@@ -5,33 +5,33 @@
         <class_name/>
         <color>default</color>
         <css/>
-        <glyph>folder-open</glyph>
+        <glyph>clock-o</glyph>
         <id/>
         <kb_article/>
         <kb_category/>
         <kb_topic/>
-        <order>4</order>
+        <order>1</order>
         <roles/>
         <sc_cat_item/>
         <sc_category/>
         <short_description/>
         <size>md</size>
-        <sp_column display_value="3">68a6f082db671300dad785184b96194b</sp_column>
-        <sp_page display_value="etask_task_categories">7e50304edb271300dad785184b96191a</sp_page>
+        <sp_column display_value="1">e5ad43dbdba3d300dad785184b961963</sp_column>
+        <sp_page display_value="etask_timeline_test_page">731fbc3edb6f5300dad785184b9619fc</sp_page>
         <sp_widget display_value="Icon Link">3caa67afcb13020000f8d856634c9c2e</sp_widget>
         <sys_class_name>sp_instance_link</sys_class_name>
         <sys_created_by>joseph.adomatis</sys_created_by>
-        <sys_created_on>2018-07-28 07:25:21</sys_created_on>
-        <sys_id>6ed9b406db671300dad785184b9619c9</sys_id>
-        <sys_mod_count>3</sys_mod_count>
-        <sys_name>Manage Task Categories</sys_name>
+        <sys_created_on>2018-08-01 15:23:37</sys_created_on>
+        <sys_id>53ad47dbdba3d300dad785184b96198e</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Timeline View</sys_name>
         <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
-        <sys_update_name>sp_instance_link_6ed9b406db671300dad785184b9619c9</sys_update_name>
+        <sys_update_name>sp_instance_link_53ad47dbdba3d300dad785184b96198e</sys_update_name>
         <sys_updated_by>joseph.adomatis</sys_updated_by>
-        <sys_updated_on>2018-08-01 15:30:12</sys_updated_on>
-        <title>Manage Task Categories</title>
+        <sys_updated_on>2018-08-01 15:26:37</sys_updated_on>
+        <title>Timeline View</title>
         <type>page</type>
         <url/>
         <widget_parameters><![CDATA[{
@@ -41,5 +41,5 @@
 	}
 }]]></widget_parameters>
     </sp_instance_link>
-    <sys_translated_text action="delete_multiple" query="documentkey=6ed9b406db671300dad785184b9619c9"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=53ad47dbdba3d300dad785184b96198e"/>
 </record_update>

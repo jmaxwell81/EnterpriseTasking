@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, spUtil) {
+  /* widget controller */
+  var c = this;
+	c.chooseNumber = '';
+	c.chooseGroupLabel = '';
+	c.chooseGroupID = '';
+	c.chooseUserLabel = '';
+	c.chooseUserID = '';
+	c.chooseStateOpen = false;
+	c.chooseStateAssigned = false;
+	c.chooseStateInProgress = false;
+	c.chooseStateSubmitted = false;
+	c.chooseStateAccepted = false;
+	c.chooseStateClosed = false;
+	c.chooseTaskLabel = 'Select Task';
+	c.chooseTaskID = '';
+	c.chooseTaskDropdown = true;
+	c.data.action = '';
+	c.data.filterNumber = '';
+	c.data.filterGroupID = '';
+	c.data.filterUserID = '';
+	c.data.filterStateOpen = false;
+	c.data.filterStateAssigned = false;
+	c.data.filterStateInProgress = false;
+	c.data.filterStateSubmitted = false;
+	c.data.filterStateAccepted = false;
+	c.data.filterStateClosed = false;
+	c.data.selectedTask = '';
+	c.canvas = document.getElementById('reportCanvas');
+	
+///////////////////////////////////////////////////////////////////////////////	
+// chooseGroup
+///////////////////////////////////////////////////////////////////////////////
+	c.chooseGroup = function(groupID,groupName){
+		c.chooseTaskLabel = 'Select Task';
+		c.chooseTaskDropdown = true;
+		if(groupName != ''){
+			c.chooseGroupLabel = groupName;
+			c.chooseGroupID = groupID;
+			c.chooseUserLabel = '';
+			c.data.filterGroupID = groupID;
+			c.data.action = 'CHOOSEGROUP';
+			c.server.update().then(function(){c.data.action = '';});
+		} else {
+			c.chooseGroupLabel = '';
+		}
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// chooseUser
+///////////////////////////////////////////////////////////////////////////////
+	c.chooseUser = function(userID, userName){
+		c.chooseTaskLabel = 'Select Task';
+		c.chooseTaskDropdown = true;
+		if(userName != ''){
+			c.chooseUserLabel = userName;
+			c.chooseUserID = userID;
+			c.chooseTaskDisabled = 'disabled';
+		} else {
+			c.chooseUserLabel = '';
+		}
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// chooseStates
+///////////////////////////////////////////////////////////////////////////////
+	c.chooseStates = function(state, value){
+		if(state != ''){
+			c.chooseTaskLabel = 'Select Task';
+			c.chooseTaskDropdown = true;
+			switch(state){
+				case 'OPEN':
+					c.chooseStateOpen = value;
+					break;
+				case 'ASSIGNED':
+					c.chooseStateAssigned = value;
+					break;
+				case 'INPROGRESS':
+					c.chooseStateInProgress = value;
+					break;
+				case 'SUBMITTED':
+					c.chooseStateSubmitted = value;
+					break;
+				case 'ACCEPTED':
+					c.chooseStateAccepted = value;
+					break;
+				case 'CLOSED':
+					c.chooseStateClosed = value;
+					break;
+				default:
+					break;
+			}
+		}
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// filterTaskDropdown
+///////////////////////////////////////////////////////////////////////////////
+	c.filterTaskDropdown = function(){
+		c.chooseTaskLabel = 'Select Task';
+		c.chooseTaskDropdown = false;
+		c.data.action = 'FILTERTASKS';
+		c.data.filterNumber = c.chooseNumber;
+		c.data.filterGroupID = c.chooseGroupID;
+		c.data.filterUserID = c.chooseUserID;
+		c.data.filterStateOpen = c.chooseStateOpen;
+		c.data.filterStateAssigned = c.chooseStateAssigned;
+		c.data.filterStateInProgress = c.chooseStateInProgress;
+		c.data.filterStateSubmitted = c.chooseStateSubmitted;
+		c.data.filterStateAccepted = c.chooseStateAccepted;
+		c.data.filterStateClosed = c.chooseStateClosed;
+		c.server.update().then(function(){
+			c.data.action = '';			
+		});		
+	};
+	
+///////////////////////////////////////////////////////////////////////////////
+// chooseTask
+///////////////////////////////////////////////////////////////////////////////
+	c.chooseTask = function(taskID, taskNumber){
+		if(taskID != ''){
+			c.data.selectedTask = taskID;
+			c.chooseTaskLabel = taskNumber;
+			c.data.action = 'CHOOSETASK';
+			c.server.update().then(function(){
+				c.data.action = '';
+				c.updateCanvas();
+			});
+		} else {
+			c.chooseTaskLabel = 'Select Task';
+		}
+	};
+
+///////////////////////////////////////////////////////////////////////////////
+// updateCanvas
+///////////////////////////////////////////////////////////////////////////////
+	c.updateCanvas = function(){
+		c.canvas.width = c.canvas.scrollWidth;
+		c.canvas.height = c.canvas.scrollHeight;
+				
+		var states = ['Draft','Open','Assigned','In Progress','Submitted','Accepted','Closed'];
+		var stateRows = [];
+		var latitudeSpacing = Math.round(c.canvas.height * 0.11);
+		var currentLatitude = 0;
+		for(i=0; i<7; i++){
+			stateRows.push({
+				'floor' : currentLatitude,
+				'ceiling' : currentLatitude + latitudeSpacing,
+				'label' : currentLatitude + Math.round(latitudeSpacing * 0.5),
+				'text' : states[i]
+			});
+			currentLatitude += latitudeSpacing;
+		}
+		
+		var chartStartLine = 60;
+		var chartEndLine = c.canvas.width - 10;
+		var chartLineBase = stateRows[6].ceiling;
+		var chartLineText = chartLineBase + 10;
+		var chartDistance = chartEndLine - chartStartLine;
+		var dateTimeDistance = c.data.chartEnd.value - c.data.chartStart.value;
+		var ctx = c.canvas.getContext("2d");
+		
+		var taskDueLinePercent = 0;
+		var taskDueLine = 0;
+		var taskNowLinePercent = 0;
+		var taskNowLine = 0;
+		var task50Line = 0;
+		var grd50 = '';
+		switch(c.data.chartEnd.type){
+			case 'CLOSED':
+				taskDueLinePercent = (c.data.taskDue.value - c.data.chartStart.value) / dateTimeDistance;
+				taskDueLine = chartStartLine + Math.round(chartDistance * taskDueLinePercent);
+				task50Line = Math.round((taskDueLine - chartStartLine)*0.5) + chartStartLine;
+				
+				ctx.save();
+				grd50 = ctx.createLinearGradient(task50Line, 0, taskDueLine, 0);
+				grd50.addColorStop(0, '#FFFFFF');
+				grd50.addColorStop(0.5, '#FFFF99');
+				grd50.addColorStop(1, '#FF8080');
+				ctx.fillStyle = grd50;
+				ctx.fillRect(task50Line, 0, taskDueLine-task50Line, chartLineBase);
+				ctx.restore();
+				
+				ctx.save();
+				ctx.fillStyle = '#FF8080';
+				ctx.fillRect(taskDueLine, 0, chartEndLine-taskDueLine, chartLineBase);
+				ctx.restore();
+				break;
+			case 'NOW':
+				taskDueLinePercent = (c.data.taskDue.value - c.data.chartStart.value) / dateTimeDistance;
+				taskDueLine = chartStartLine + Math.round(chartDistance * taskDueLinePercent);
+				task50Line = Math.round((taskDueLine - chartStartLine)*0.5) + chartStartLine;
+				
+				ctx.save();
+				grd50 = ctx.createLinearGradient(task50Line, 0, taskDueLine, 0);
+				grd50.addColorStop(0, '#FFFFFF');
+				grd50.addColorStop(0.5, '#FFFF99');
+				grd50.addColorStop(1, '#FF8080');
+				ctx.fillStyle = grd50;
+				ctx.fillRect(task50Line, 0, taskDueLine-task50Line, chartLineBase);
+				ctx.restore();
+				
+				ctx.save();
+				ctx.fillStyle = '#FF8080';
+				ctx.fillRect(taskDueLine, 0, chartEndLine-taskDueLine, chartLineBase);
+				ctx.restore();
+				break;
+			case 'DUE':				
+				task50Line = Math.round((chartEndLine - chartStartLine)*0.5) + chartStartLine;
+				taskNowLinePercent = (c.data.taskNow.value - c.data.chartStart.value) / dateTimeDistance;
+				taskNowLine = chartStartLine + Math.round(chartDistance * taskNowLinePercent);
+				
+				ctx.save();
+				grd50 = ctx.createLinearGradient(task50Line, 0, chartEndLine, 0);
+				grd50.addColorStop(0, '#FFFFFF');
+				grd50.addColorStop(0.5, '#FFFF99');
+				grd50.addColorStop(1, '#FF8080');
+				ctx.fillStyle = grd50;
+				ctx.fillRect(task50Line, 0, chartEndLine-task50Line, chartLineBase);
+				ctx.restore();				
+				break;
+			default:
+				break;
+		}
+		
+		var chg;
+		var endChangeLinePercent = 0;
+		var startChangeLine = chartStartLine;
+		var endChangeLine = 0;
+		var changeBar = stateRows[(c.data.stateChanges[0].oldvalue)].label;		
+		for(chg in c.data.stateChanges){
+			endChangeLinePercent = (c.data.stateChanges[chg].time - c.data.chartStart.value) / dateTimeDistance;
+			endChangeLine = chartStartLine + Math.round(chartDistance * endChangeLinePercent);
+			ctx.strokeStyle = "#0000ff";
+			ctx.lineWidth = 20;
+			ctx.beginPath();
+			ctx.moveTo(startChangeLine, changeBar);
+			ctx.lineTo(endChangeLine, changeBar);
+			ctx.closePath();
+			ctx.stroke();
+			
+			ctx.strokeStyle = '#000000';
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(endChangeLine, 0);
+			ctx.lineTo(endChangeLine, chartLineBase);
+			ctx.closePath();
+			ctx.stroke();
+			
+			ctx.moveTo(0,0);
+			ctx.save();
+			ctx.translate(endChangeLine, chartLineText);
+			ctx.rotate(Math.PI/2);
+			ctx.font = "10px Arial";
+			ctx.textAlign = 'start';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = '#000000';
+			ctx.fillText(c.data.stateChanges[chg].text, 0, 0);
+			ctx.restore();
+			
+			changeBar = stateRows[(c.data.stateChanges[chg].newvalue)].label
+			startChangeLine = endChangeLine;
+		}
+		if(taskNowLine != 0){
+			ctx.strokeStyle = "#0000ff";
+			ctx.lineWidth = 20;
+			ctx.beginPath();
+			ctx.moveTo(startChangeLine, changeBar);
+			ctx.lineTo(taskNowLine, changeBar);
+			ctx.closePath();
+			ctx.stroke();
+		} else {
+			ctx.strokeStyle = "#0000ff";
+			ctx.lineWidth = 20;
+			ctx.beginPath();
+			ctx.moveTo(startChangeLine, changeBar);
+			ctx.lineTo(chartEndLine, changeBar);
+			ctx.closePath();
+			ctx.stroke();
+		}
+		
+		for(i=0; i<7; i++){
+			ctx.font = "10px Arial";
+			ctx.textAlign = 'end';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = '#000000';
+			ctx.fillText(stateRows[i].text, 55, stateRows[i].label);
+			
+			ctx.strokeStyle = "#000000";
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(0,stateRows[i].ceiling);
+			ctx.lineTo(c.canvas.width, stateRows[i].ceiling);
+			ctx.closePath();
+			ctx.stroke();
+		}
+		
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(chartStartLine, 0);
+		ctx.lineTo(chartStartLine, chartLineBase);
+		ctx.closePath();
+		ctx.stroke();
+		
+		ctx.save();
+		ctx.translate(chartStartLine, chartLineText);
+		ctx.rotate(Math.PI/2);
+		ctx.font = "10px Arial";
+		ctx.textAlign = 'start';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = "#000000";
+		ctx.fillText(c.data.chartStart.text, 0, 0);
+		ctx.restore();
+		
+		if(taskDueLine != 0){
+			ctx.strokeStyle = "#FF0000";
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(taskDueLine, 0);
+			ctx.lineTo(taskDueLine, chartLineBase);
+			ctx.closePath();
+			ctx.stroke();
+			
+			ctx.save();
+			ctx.translate(taskDueLine, chartLineText);
+			ctx.rotate(Math.PI/2);
+			ctx.font = "10px Arial";
+			ctx.textAlign = 'start';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = "#FF0000";
+			ctx.fillText(c.data.taskDue.text, 0, 0);
+			ctx.restore();	
+		}
+		
+		if(taskNowLine != 0){
+			ctx.strokeStyle = "#0000FF";
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(taskNowLine, 0);
+			ctx.lineTo(taskNowLine, chartLineBase);
+			ctx.closePath();
+			ctx.stroke();
+				
+			ctx.save();
+			ctx.translate(taskNowLine, chartLineText);
+			ctx.rotate(Math.PI/2);
+			ctx.font = "10px Arial";
+			ctx.textAlign = 'start';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = '#0000FF';
+			ctx.fillText(c.data.taskNow.text, 0, 0);
+			ctx.restore();
+		}
+		
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(chartEndLine, 0);
+		ctx.lineTo(chartEndLine, chartLineBase);
+		ctx.closePath();
+		ctx.stroke();
+		
+		ctx.save();
+		ctx.translate(chartEndLine, chartLineText);
+		ctx.rotate(Math.PI/2);
+		ctx.font = "10px Arial";
+		ctx.textAlign = 'start';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = "#000000";
+		ctx.fillText(c.data.chartEnd.text, 0, 0);
+		ctx.restore();
+	};
+	
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.widget-container {
+	display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+
+.task-selector {
+	flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.report-container {
+	flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.heading-container{
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.canvas-container{
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.report-canvas{
+  flex-grow: 1;
+  flex-shrink: 1;
+  border:2px solid #000000;
+}
+
+.filter-dropdown {
+	display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.filter-dropdown-label{
+	flex-grow: 1;
+  flex-shrink: 0;
+  text-align: left;  
+}
+
+.filter-dropdown-symbol{
+	flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-submit{
+  width: 100%;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>etask-timeline-state</id>
+        <internal>false</internal>
+        <link/>
+        <name>ETASK Timeline (state)</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+	
+	if(input == '' || input == null){
+		var groups = [];
+		var grouplist = new GlideRecord('sys_user_group');
+		grouplist.orderBy('name');
+		grouplist.query();
+		while(grouplist.next()){
+			groups.push({
+				'sys_id':grouplist.sys_id.toString(),
+				'name':grouplist.name.toString()
+			});
+		}
+		data.groups = groups;
+	} else {
+		switch(input.action){
+			case 'CHOOSEGROUP':
+				var users = [];
+				var userlist = new GlideRecord('sys_user_grmember');
+				userlist.addQuery('group', input.filterGroupID);
+				userlist.orderBy('user.name');
+				userlist.query();
+				while(userlist.next()){
+					users.push({
+						'sys_id':userlist.user.sys_id.toString(),
+						'name':userlist.user.name.toString()
+					});
+				}
+				data.users = users;
+				break;
+			case 'FILTERTASKS':
+				var tasks = [];
+				var states = '';
+				var tasklist = new GlideRecord('x_etask_enterprise_tasking');
+				if(input.filterNumber != ''){
+					tasklist.addQuery('number', 'CONTAINS', input.filterNumber);
+				}
+				if(input.filterGroupID != ''){
+					tasklist.addQuery('assignment_group', input.filterGroupID);
+				}
+				if(input.filterUserID != ''){
+					tasklist.addQuery('assigned_to', input.filterUserID);
+				}
+				if(input.filterStateOpen != false){
+					states += 'Open,';
+				}
+				if(input.filterStateAssigned != false){
+					states += 'Assigned,';
+				}
+				if(input.filterStateInProgress != false){
+					states += 'In Progress,';
+				}
+				if(input.filterStateSubmitted != false){
+					states += 'Submitted,';
+				}
+				if(input.filterStateAccepted != false){
+					states += 'Accepted,';
+				}
+				if(input.filterStateClosed != false){
+					states += 'Closed,';
+				}
+				if(states != ''){
+					states = states.slice(0,-1);
+					tasklist.addQuery('u_current_state', 'IN', states);	
+				} else {
+					tasklist.addQuery('u_current_state','!=', 'Draft').addCondition('u_current_state','!=', 'Cancelled');
+				}
+				tasklist.query();
+				while(tasklist.next()){
+					tasks.push({
+						'sys_id' : tasklist.sys_id.toString(),
+						'number' : tasklist.number.toString(),
+						'short' : tasklist.short_description.toString()
+					});
+				}
+				data.tasks = tasks;				
+				break;
+			case 'CHOOSETASK':
+				var chosenTask = new GlideRecord('x_etask_enterprise_tasking');
+				chosenTask.addQuery('sys_id', input.selectedTask);
+				chosenTask.query();
+				if(!chosenTask.next()){
+					break;
+				}
+				
+				var nowDateTime = new GlideDateTime();
+				var taskStartDateTime = new GlideDateTime(chosenTask.getValue('sys_created_on'));
+				var taskDueDateTime = new GlideDateTime(chosenTask.getValue('u_this_due_date'));
+				var taskClosedDateTime = '';
+				
+				var checkAcceptedOnTime = new GlideRecord('sys_audit');
+				checkAcceptedOnTime.addQuery('documentkey', input.selectedTask);
+				checkAcceptedOnTime.addQuery('tablename', 'x_etask_enterprise_tasking');
+				checkAcceptedOnTime.addQuery('fieldname', 'u_current_state');
+				checkAcceptedOnTime.addQuery('newvalue', 'Accepted').addOrCondition('newvalue', 'Closed');
+				checkAcceptedOnTime.orderByDesc('sys_created_on');
+				checkAcceptedOnTime.query();
+				var taskAcceptedOnTime = false;
+				while(checkAcceptedOnTime.next()){
+					if(checkAcceptedOnTime.getValue('newvalue') == 'Closed'){
+						taskClosedDateTime = new GlideDateTime(checkAcceptedOnTime.getValue('sys_created_on'));
+					} else if(checkAcceptedOnTime.getValue('newvalue') == 'Accepted') {
+						var acceptedDateTime = new GlideDateTime(checkAcceptedOnTime.getValue('sys_created_on'));
+						if(acceptedDateTime.compareTo(taskDueDateTime) <= 0){
+							taskAcceptedOnTime = true;
+						} else {
+							taskAcceptedOnTime = false;
+						} 
+						break;
+					} else {
+						taskAcceptedOnTime = false;
+						break;
+					} 
+					
+				}				
+				data.chartStart = {
+					'value' : taskStartDateTime.getNumericValue(),
+					'text' : taskStartDateTime.getDisplayValue()
+				}
+				if(nowDateTime.compareTo(taskDueDateTime) >= 0 && !taskAcceptedOnTime){
+					if(taskClosedDateTime != ''){
+						data.chartEnd = {
+							'value' : taskClosedDateTime.getNumericValue(),
+							'text' : taskClosedDateTime.getDisplayValue(),
+							'type' : 'CLOSED'
+						};
+						data.taskDue = {
+							'value' : taskDueDateTime.getNumericValue(),
+							'text' : taskDueDateTime.getDisplayValue()
+						};
+					} else {
+						data.chartEnd = {
+							'value' : nowDateTime.getNumericValue(),
+							'text' : nowDateTime.getDisplayValue(),
+							'type' : 'NOW'
+						};
+						data.taskDue = {
+							'value' : taskDueDateTime.getNumericValue(),
+							'text' : taskDueDateTime.getDisplayValue()
+						};
+					}					
+				} else {
+					data.chartEnd = {
+						'value' : taskDueDateTime.getNumericValue(),
+						'text' : taskDueDateTime.getDisplayValue(),
+						'type' : 'DUE'
+					};
+					data.taskNow = {
+						'value' : nowDateTime.getNumericValue(),
+						'text' : nowDateTime.getDisplayValue()
+					};
+				}
+				
+				var stateChanges = [];
+				var changeList = new GlideRecord('sys_audit');
+				changeList.addQuery('documentkey', input.selectedTask);
+				changeList.addQuery('tablename', 'x_etask_enterprise_tasking');
+				changeList.addQuery('fieldname', 'u_current_state');
+				changeList.orderBy('sys_created_on');
+				changeList.query();
+				while(changeList.next()){
+					var changeTime = new GlideDateTime(changeList.getValue('sys_created_on'));
+					var oValue = '';
+					var nValue = '';
+					switch(changeList.getValue('oldvalue')){
+						case 'Draft':
+							oValue = 0;
+							break;
+						case 'Open':
+							oValue = 1;
+							break;
+						case 'Assigned':
+							oValue = 2;
+							break;
+						case 'In Progress':
+							oValue = 3;
+							break;
+						case 'Submitted':
+							oValue = 4;
+							break;
+						case 'Accepted':
+							oValue = 5;
+							break;
+						case 'Closed':
+							oValue = 6;
+							break;
+						default:
+							break;
+					}
+					switch(changeList.getValue('newvalue')){
+						case 'Draft':
+							nValue = 0;
+							break;
+						case 'Open':
+							nValue = 1;
+							break;
+						case 'Assigned':
+							nValue = 2;
+							break;
+						case 'In Progress':
+							nValue = 3;
+							break;
+						case 'Submitted':
+							nValue = 4;
+							break;
+						case 'Accepted':
+							nValue = 5;
+							break;
+						case 'Closed':
+							nValue = 6;
+							break;
+						default:
+							break;
+					}
+					stateChanges.push({
+						'oldvalue' : oValue,
+						'newvalue' : nValue,
+						'time' : changeTime.getNumericValue(),
+						'text' : changeTime.getDisplayValue()
+					});
+				}
+				data.stateChanges = stateChanges;
+				break;
+			default:
+				break;
+		}
+	}
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>joseph.adomatis</sys_created_by>
+        <sys_created_on>2018-07-30 15:43:50</sys_created_on>
+        <sys_id>771fbc3edb6f5300dad785184b9619f9</sys_id>
+        <sys_mod_count>234</sys_mod_count>
+        <sys_name>ETASK Timeline (state)</sys_name>
+        <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
+        <sys_update_name>sp_widget_771fbc3edb6f5300dad785184b9619f9</sys_update_name>
+        <sys_updated_by>joseph.adomatis</sys_updated_by>
+        <sys_updated_on>2018-08-01 01:51:53</sys_updated_on>
+        <template><![CDATA[<div class="widget-container">
+	<div class="panel panel-default task-selector">
+    <div class="panel-heading">Select ETASK</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>Filter by Number:</label>
+        <input type="text" class="form-control" ng-model="c.chooseNumber">
+      </div>
+      <div class="form-group">
+        <label>Filter by Assignment Group:</label>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle filter-dropdown" type="button" data-toggle="dropdown">
+            <div class="filter-dropdown-label">{{c.chooseGroupLabel}}</div>
+            <div class="filter-dropdown-symbol">
+              <span class="caret"></span>
+            </div>        
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat='grp in c.data.groups'><a href="#" ng-click="c.chooseGroup(${grp.sys_id},${grp.name})">{{grp.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Filter by Assigned To:</label>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle filter-dropdown" type="button" data-toggle="dropdown">
+            <div class="filter-dropdown-label">{{c.chooseUserLabel}}</div>
+            <div class="filter-dropdown-symbol">
+              <span class="caret"></span>
+            </div>        
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat='usr in c.data.users'><a href="#" ng-click="c.chooseUser(${usr.sys_id},${usr.name})">{{usr.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="filter-etask-number">Filter by States:</label>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateOpen" ng-click="c.chooseStates('OPEN',!c.chooseStateOpen)">&nbsp;&nbsp;Open
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateAssigned" ng-click="c.chooseStates('ASSIGNED',!c.chooseStateAssigned)">&nbsp;&nbsp;Assigned
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateInProgress" ng-click="c.chooseStates('INPROGRESS',!c.chooseStateInProgress)">&nbsp;&nbsp;In Progress
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateSubmitted" ng-click="c.chooseStates('SUBMITTED',!c.chooseStateSubmitted)">&nbsp;&nbsp;Submitted
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateAccepted" ng-click="c.chooseStates('ACCEPTED',!c.chooseStateAccepted)">&nbsp;&nbsp;Accepted
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" value="c.chooseStateClosed" ng-click="c.chooseStates('CLOSED',!c.chooseStateClosed)">&nbsp;&nbsp;Closed
+          </label>
+        </div>      
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary filter-submit" ng-click="c.filterTaskDropdown()">Run Filters</button>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div class="form-group">
+        <label>Select Task from Filtered List:</label>
+        <div class="dropdown" >
+          <button class="btn btn-primary dropdown-toggle filter-dropdown" type="button" data-toggle="dropdown" ng-disabled="${c.chooseTaskDropdown}">
+            <div class="filter-dropdown-label">{{c.chooseTaskLabel}}</div>
+            <div class="filter-dropdown-symbol">
+              <span class="caret"></span>
+            </div>        
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat='tsk in c.data.tasks'><a href="#" ng-click="c.chooseTask(${tsk.sys_id},${tsk.number})">*&nbsp;&nbsp;{{tsk.number}}<br>&nbsp;&nbsp;&nbsp;&nbsp;{{tsk.short}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default report-container">
+    <div class="panel-heading heading-container">Timeline Report (state)</div>
+    <div class="panel-body canvas-container">
+      <canvas id="reportCanvas" class="report-canvas" width="${c.canvas.width}" height="${c.canvas.height}"></canvas>   
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

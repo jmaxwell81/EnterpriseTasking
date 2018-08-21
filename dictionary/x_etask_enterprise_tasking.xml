@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-    <element audit="true" extends="task" label="Enterprise Tasking" max_length="40" name="x_etask_enterprise_tasking" sizeclass="1" type="collection">
+    <element audit="true" extends="task" label="Enterprise Tasking" max_length="40" name="x_etask_enterprise_tasking" sizeclass="4" type="collection">
         <element choice="3" default="Document" label="Child delivery type" max_length="40" name="u_action_delivery_type" type="choice">
             <choice>
                 <element label="Document" sequence="100" value="Document"/>

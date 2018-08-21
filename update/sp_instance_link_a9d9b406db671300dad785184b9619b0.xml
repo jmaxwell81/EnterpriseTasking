@@ -10,7 +10,7 @@
         <kb_article/>
         <kb_category/>
         <kb_topic/>
-        <order>2</order>
+        <order>3</order>
         <roles/>
         <sc_cat_item/>
         <sc_category/>
@@ -23,14 +23,14 @@
         <sys_created_by>joseph.adomatis</sys_created_by>
         <sys_created_on>2018-07-28 07:25:17</sys_created_on>
         <sys_id>a9d9b406db671300dad785184b9619b0</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Manage Delegates</sys_name>
         <sys_package display_value="Enterprise Tasking" source="x_231571_enterpris">8b059f75db631300dad785184b96193b</sys_package>
         <sys_policy/>
         <sys_scope display_value="Enterprise Tasking">8b059f75db631300dad785184b96193b</sys_scope>
         <sys_update_name>sp_instance_link_a9d9b406db671300dad785184b9619b0</sys_update_name>
         <sys_updated_by>joseph.adomatis</sys_updated_by>
-        <sys_updated_on>2018-07-28 07:30:45</sys_updated_on>
+        <sys_updated_on>2018-08-01 15:30:12</sys_updated_on>
         <title>Manage Delegates</title>
         <type>page</type>
         <url/>
